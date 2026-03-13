@@ -132,6 +132,12 @@ def generate_github_secret_imports(faasr_payload):
                     ]
                 )
 
+    # If workflow is configured with Pulumi secret store, expose Pulumi token
+    if "PulumiSecretStore" in faasr_payload:
+        import_statements.append(
+            "PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}"
+        )
+
     # Indent each line for YAML formatting
     indent = " " * 20
     import_statements = "\n".join(f"{indent}{s}" for s in import_statements)
